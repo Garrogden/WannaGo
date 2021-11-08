@@ -14,8 +14,35 @@ class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap))
+        mapView.addGestureRecognizer(gestureRecognizer)
         determineCurrentLocation()
         // Do any additional setup after loading the view.
+    }
+    @objc func handleLongTap(gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            let locationInView = gestureRecognizer.location(in: mapView)
+            let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
+            let location = CLLocation (latitude: locationOnMap.latitude, longitude: locationOnMap.longitude)
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location) {(placemarks, error) in
+                if let places = placemarks {
+                    for place in places {
+                        print("Found placemark \(place.name) in \(place.administrativeArea), \(place.country) at address \(place.postalCode)")
+                        self.addAnnotation(location: locationOnMap, title: place.name, subtitle: place.administrativeArea)
+                    }
+                }
+            }
+          
+        }
+    }
+    
+    func addAnnotation(location: CLLocationCoordinate2D, title: String? ,subtitle: String?) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        annotation.title = title ?? ""
+        annotation.subtitle = subtitle ?? ""
+        self.mapView.addAnnotation(annotation)
     }
     
     func determineCurrentLocation () {
