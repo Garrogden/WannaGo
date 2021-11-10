@@ -30,6 +30,46 @@ class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
                     for place in places {
                         print("Found placemark \(place.name) in \(place.administrativeArea), \(place.country) at address \(place.postalCode)")
                         self.addAnnotation(location: locationOnMap, title: place.name, subtitle: place.administrativeArea)
+                        
+                        
+                        let db = Firestore.firestore()
+                        var placeName: String = "placeName"
+                        var placeCountry: String = "placeCountry"
+                        var placePostalCode: String = "placePostalCode"
+                        let latitude: Double = locationOnMap.latitude
+                        let longitude: Double = locationOnMap.longitude
+                        
+                        if let name = place.name {
+                                   placeName = name
+                               }
+                        if let country = place.country {
+                                   placeCountry = country
+                               }
+                        if let postal = place.postalCode {
+                                   placePostalCode = postal
+                               }
+                                                
+                        var ref: DocumentReference? = nil
+                                
+                                var collection = ""
+                                if let user = GIDSignIn.sharedInstance.currentUser {
+                                    collection = user.userID!
+                                }
+                                
+                                ref = db.collection(collection).addDocument(data: [
+                                    "placeName": placeName,
+                                    "placeCountry": placeCountry,
+                                    "placePostalCode": placePostalCode,
+                                    "longitude": longitude,
+                                    "latitude": latitude
+                                ]) { err in
+                                    if let err = err {
+                                        print("Error writing document: \(err)")
+                                    } else {
+                                        print("Document added with ID \(ref!.documentID )")
+                                    }
+                                    
+                                }
                     }
                 }
             }
