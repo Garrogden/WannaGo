@@ -10,11 +10,12 @@ import UIKit
 import Firebase
 
 struct placeInfo {
+    let placeName: String?
     let latitude: Double?
     let longitude: Double?
-    let placeName: String?
     let placeCountry: String?
     let placePostalCode: String?
+    let administrativeArea: String?
     
     
 }
@@ -25,11 +26,13 @@ extension placeInfo {
         var places = [placeInfo]()
         for document in documents {
             places.append(placeInfo(
-                            placeName: document["Name"] as? String,
+                            placeName: document["placeName"] as? String,
                             latitude: document["latitude"] as? Double,
                             longitude: document["longitude"] as? Double,
                             placeCountry: document["country"] as? String,
-                            placePostalCode: document["PostalCode"] as? String))
+                            placePostalCode: document["placePostalCode"] as? String,
+                            administrativeArea: document["administrativeArea"] as? String
+            ))
             
         }
         return places
@@ -42,7 +45,9 @@ extension placeInfo {
             latitude: document["latitude"] as? Double,
             longitude: document["longitude"] as? Double,
             placeCountry: document["country"] as? String,
-            placePostalCode: document["PostalCode"] as? String)
+            placePostalCode: document["PostalCode"] as? String,
+            administrativeArea: document["administrativeArea"] as? String
+            )
         
     }
 }

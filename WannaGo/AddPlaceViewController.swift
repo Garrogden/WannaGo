@@ -6,7 +6,10 @@
 //
 
 import UIKit
-import MapKit 
+import MapKit
+import Firebase
+import GoogleSignIn
+
 
 class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
@@ -38,6 +41,7 @@ class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
                         var placePostalCode: String = "placePostalCode"
                         let latitude: Double = locationOnMap.latitude
                         let longitude: Double = locationOnMap.longitude
+                        var administrativeArea: String = ""
                         
                         if let name = place.name {
                                    placeName = name
@@ -48,6 +52,9 @@ class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
                         if let postal = place.postalCode {
                                    placePostalCode = postal
                                }
+                        if let area = place.administrativeArea {
+                            administrativeArea = area
+                        }
                                                 
                         var ref: DocumentReference? = nil
                                 
@@ -61,7 +68,8 @@ class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
                                     "placeCountry": placeCountry,
                                     "placePostalCode": placePostalCode,
                                     "longitude": longitude,
-                                    "latitude": latitude
+                                    "latitude": latitude,
+                                    "administrativeArea": administrativeArea
                                 ]) { err in
                                     if let err = err {
                                         print("Error writing document: \(err)")

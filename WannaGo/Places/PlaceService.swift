@@ -5,7 +5,7 @@
 //  Created by Ogden, Garret L on 11/3/21.
 //
 
-import Foundation
+
 import Firebase
 
 class PlaceService {
@@ -22,14 +22,14 @@ class PlaceService {
         }
     }
     
-    func getOne (collectionID: String, placeName: String, handler: @escaping (placeInfo) -> Void) {
-        database.collection(collectionID).document(placeInfo).addSnapshotListener {DocumentSnapshot, err in
-            if let error = err {
-                print (error)
-            } else {
-                handler(appTask.buildOne(from: DocumentSnapshot!))
-            }
-        }
-    }
+//    func getOne (collectionID: String, placeName: String, handler: @escaping (placeInfo) -> Void) {
+//        database.collection(collectionID).document(placeInfo).addSnapshotListener {DocumentSnapshot, err in
+//            if let error = err {
+//                print (error)
+//            } else {
+//                handler(appTask.buildOne(from: DocumentSnapshot!))
+//            }
+//        }
+//    }
     
 }
