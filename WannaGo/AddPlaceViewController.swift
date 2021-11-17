@@ -14,12 +14,17 @@ import GoogleSignIn
 class AddPlaceViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
     @IBOutlet var mapView: MKMapView!
+    var mapPlaces = [placeInfo]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap))
         mapView.addGestureRecognizer(gestureRecognizer)
         determineCurrentLocation()
+        for place in mapPlaces {
+            let coordinate = CLLocationCoordinate2D(latitude: place.latitude ?? 55, longitude: place.longitude ?? 66)
+            addAnnotation(location: coordinate , title: place.placeName, subtitle: place.administrativeArea)
+        }
         // Do any additional setup after loading the view.
     }
     @objc func handleLongTap(gestureRecognizer: UILongPressGestureRecognizer) {

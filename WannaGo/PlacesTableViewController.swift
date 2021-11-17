@@ -66,4 +66,14 @@ class PlacesTableViewController: UITableViewController {
             
                     
                 }
+    
+    //Segue
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "placeDetailSegue" {
+                //Get a reference to the destination view controller
+                let placeMap = segue.destination as! AddPlaceViewController
+                placeMap.mapPlaces = places
+            }
+            
+}
 }
